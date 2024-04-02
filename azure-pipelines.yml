@@ -1,0 +1,24 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: windows
+
+steps:
+- task: UiPathPack@4
+  inputs:
+    versionType: 'AutoVersion'
+    projectJsonPath: '$(Build.SourcesDirectory)'
+    outputType: 'Process'
+    orchestratorConnection: 'UiPathProdCloud'
+    outputPath: '$(Build.ArtifactStagingDirectory)\Output'
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'Demo'
+    publishLocation: 'Container'
